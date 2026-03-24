@@ -1,25 +1,33 @@
 {
-  "scenario": "openai-agent-human-approval",
-  "description": "OpenAI Agents SDK agent processes tasks with durable human approval gates via AXME",
+  "scenario_id": "openai-agents-handoff.demo.v1",
+  "title": "OpenAI Agents handoff with durable delivery",
+  "description": "OpenAI agent processes a task via AXME durable intent lifecycle.",
   "agents": [
     {
-      "agent_uri": "agent://task-processor",
-      "name": "Task Processor",
-      "description": "OpenAI agent that analyzes tasks and requests human approval for risky operations",
-      "capabilities": ["process_task"]
+      "role": "openai_agent",
+      "address": "openai-agent-demo",
+      "display_name": "OpenAI Processing Agent",
+      "delivery_mode": "stream",
+      "create_if_missing": true
     }
   ],
   "workflow": {
     "steps": [
       {
-        "intent_type": "process_task",
-        "to_agent": "agent://task-processor",
-        "description": "Analyze task, assess risk, request human approval if needed"
+        "step_id": "process_task",
+        "tool_id": "tool.agent.task.v1",
+        "assigned_to": "openai_agent",
+        "step_deadline_seconds": 120
       }
     ]
   },
-  "timeouts": {
-    "process_task": "10m",
-    "human_approval": "7d"
+  "intent": {
+    "type": "intent.openai.task_processing.v1",
+    "payload": {
+      "task": "Analyze Q1 sales data and generate insights",
+      "priority": "high",
+      "department": "Sales"
+    },
+    "max_delivery_attempts": 3
   }
 }

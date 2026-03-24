@@ -145,6 +145,57 @@ adds durable infrastructure to any agent regardless of framework:
 
 ---
 
+## Run the Full Example
+
+### Prerequisites
+
+```bash
+# Install CLI (one-time)
+curl -fsSL https://raw.githubusercontent.com/AxmeAI/axme-cli/main/install.sh | sh
+# Open a new terminal, or run the "source" command shown by the installer
+
+# Log in
+axme login
+
+# Install Python SDK
+pip install axme
+```
+
+### Terminal 1 - submit the intent
+
+```bash
+axme scenarios apply scenario.json
+# Note the intent_id in the output
+```
+
+### Terminal 2 - start the agent
+
+Get the agent key after scenario apply:
+
+```bash
+# macOS
+cat ~/Library/Application\ Support/axme/scenario-agents.json | grep -A2 openai-agent-demo
+
+# Linux
+cat ~/.config/axme/scenario-agents.json | grep -A2 openai-agent-demo
+```
+
+Then run the agent:
+
+```bash
+# Python (SSE stream listener)
+AXME_API_KEY=<agent-key> python agent.py
+```
+
+### Verify
+
+```bash
+axme intents get <intent_id>
+# lifecycle_status: COMPLETED
+```
+
+---
+
 ## Related
 
 - [AXME Python SDK](https://github.com/AxmeAI/axme-sdk-python) -- `pip install axme`
