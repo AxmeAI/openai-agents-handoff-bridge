@@ -86,25 +86,26 @@ resumes and completes the task.
 ## How It Works
 
 ```
-┌──────────────────────┐         ┌──────────────┐         ┌─────────────┐
-│  Your Application    │         │  AXME Cloud   │         │  Human      │
-│                      │         │               │         │  Reviewer   │
-│  ┌────────────────┐  │  send   │  ┌─────────┐  │         │             │
-│  │  OpenAI Agent   │──┼────────▶│  Intent   │  │  notify │  Dashboard  │
-│  │  (Agents SDK)   │  │         │  (durable)│──┼────────▶│  or CLI     │
-│  │                 │  │         │           │  │         │             │
-│  │  - Tool use     │  │         │  Waiting  │  │         │  Approve /  │
-│  │  - Guardrails   │  │         │  State    │◀─┼─────────│  Reject     │
-│  │  - Handoffs     │  │         │  (7 days) │  │         │             │
-│  └────────┬───────┘  │         │  ┌─────────┐  │         └─────────────┘
-│           │          │  resume  │  │ Resume  │  │
-│           │◀─────────┼─────────│  │ + Result│  │
-│           │          │         │  └─────────┘  │
-│  Agent resumes       │         │               │
-│  and completes       │         │  Retries,     │
-│                      │         │  timeouts,    │
-│                      │         │  observability│
-└──────────────────────┘         └──────────────┘
+┌────────────────────┐      ┌──────────────────┐      ┌──────────────┐
+│  Your Application  │      │   AXME Cloud     │      │    Human     │
+│                    │      │                  │      │   Reviewer   │
+│  ┌──────────────┐  │ send │  ┌────────────┐  │notify│              │
+│  │ OpenAI Agent │──┼────> │  │  Intent    │──┼────> │  Dashboard   │
+│  │ (Agents SDK) │  │      │  │  (durable) │  │      │  or CLI      │
+│  │              │  │      │  │            │  │      │              │
+│  │ - Tool use   │  │      │  │  Waiting   │  │      │  Approve /   │
+│  │ - Guardrails │  │      │  │  State     │<─┼───── │  Reject      │
+│  │ - Handoffs   │  │      │  │  (7 days)  │  │      │              │
+│  └──────┬───────┘  │      │  └────────────┘  │      └──────────────┘
+│         │          │resume│  ┌────────────┐  │
+│         │<─────────┼───── │  │  Resume    │  │
+│         │          │      │  │  + Result  │  │
+│  Agent resumes     │      │  └────────────┘  │
+│  and completes     │      │                  │
+│                    │      │  Retries,        │
+│                    │      │  timeouts,       │
+│                    │      │  observability   │
+└────────────────────┘      └──────────────────┘
 ```
 
 1. **Initiator** sends a task intent to the agent via AXME
